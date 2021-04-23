@@ -25,7 +25,7 @@ public class OdaiBotService {
         OdaiRenponse odai = odaiApiLogic.call();
 
         String text = generateTweetMessage(odai);
-        
+
         tweetLogic.tweet(text);
 
     }
