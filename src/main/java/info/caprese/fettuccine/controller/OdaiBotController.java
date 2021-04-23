@@ -16,7 +16,13 @@ class OdaiBotController {
     @Scheduled(cron = "${scheduler.cron}")
     public void tweetAnnouncement() {
         log.info("お題アナウンスつぶやき 【開始】");
-        service.call();
+        service.announcement();
         log.info("お題アナウンスつぶやき  [終了]");
+    }
+    @Scheduled(cron = "${scheduler.cron2}")
+    public void tweetStart() {
+        log.info("お題開始つぶやき 【開始】");
+        service.start();
+        log.info("お題開始つぶやき  [終了]");
     }
 }
