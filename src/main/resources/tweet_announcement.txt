@@ -1,0 +1,6 @@
+#mow。版深夜のお絵描き60分一本勝負
+#mow。版深夜のお絵描き60分一本勝負_[# th:utext="${date}" /]
+本日21時〜開催
+お題[# th:each="themeName : ${themeNames}"  th:utext="'「'+${themeName}+'」'" /]
+※サイン記載は不要となりました
+※R17.18作品投稿禁止

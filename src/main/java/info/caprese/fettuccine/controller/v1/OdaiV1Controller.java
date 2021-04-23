@@ -41,8 +41,11 @@ public class OdaiV1Controller {
     ResponseEntity<OdaiRenponse> pastaDateGet(@PathVariable("date") String date) {
         if (!validator.validateDate(date)) {
             log.info("入力チェック - [NG]");
-            return new ResponseEntity<OdaiRenponse>(OdaiRenponse.builder().result(Result.NG)
-                    .errorMsg("日付の指定が変だぞ:" + date).build(), HttpStatus.OK);
+            OdaiRenponse response = new OdaiRenponse();
+            response.setResult(Result.NG);
+            response.setErrorMsg("日付の指定が変だぞ:" + date);
+
+            return new ResponseEntity<OdaiRenponse>(response, HttpStatus.OK);
         }
         log.info("入力チェック - [OK]");
 
@@ -56,11 +59,12 @@ public class OdaiV1Controller {
         odaiList.forEach(odai -> {
                              themeNames.add(odai.getOdaiName());
     });
+        OdaiRenponse response = new OdaiRenponse();
+        response.setResult(Result.OK);
+        response.setDate(date);
+        response.setThemeNames(themeNames);
+
         return new ResponseEntity<OdaiRenponse>(
-                OdaiRenponse.builder()
-                        .result(Result.OK)
-                        .date(date)
-                        .themeNames(themeNames)
-                        .build(), HttpStatus.OK);
+                response, HttpStatus.OK);
     }
 }

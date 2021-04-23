@@ -5,8 +5,6 @@ spring:
     name: fettuccine
   profiles:
     active: dev
-  jackson:
-    property-naming-strategy: SNAKE_CASE
   jpa:
     hibernate:
       ddl-auto: update
@@ -22,3 +20,5 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+app:
+  odai-api-url: http://localhost:8085/v1/
