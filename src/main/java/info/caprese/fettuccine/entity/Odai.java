@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class Odai {
     @Id
     private String targetDate;
+    private Integer displayOrder;
     @Id
     private Integer odaiId;
     private String odaiName;

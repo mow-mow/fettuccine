@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Slf4j
@@ -23,7 +24,7 @@ public class OdaiService {
     private OdaiMRepository odaiMRepository;
 
     public List<Odai> findOdai(String date) {
-        List<Odai> odaiList = odaiRepository.findByTargetDate(date);
+        List<Odai> odaiList = odaiRepository.findByTargetDateOrderByDisplayOrder(date);
         if (odaiList.size() != 0) {
             log.info("お題あり");
             return odaiList;
@@ -39,15 +40,18 @@ public class OdaiService {
 
         List<Odai> odaiList = new ArrayList<>();
         List<OdaiM> odaiMList = odaiMRepository.findOdaiMRandom();
+        AtomicInteger i = new AtomicInteger();
         odaiMList.forEach(
                 m -> {
                     Odai odai = new Odai();
                     odai.setTargetDate(date);
                     odai.setOdaiId(m.getOdaiId());
+                    odai.setDisplayOrder(i.incrementAndGet());
                     odai.setOdaiName(m.getOdaiName());
                     odai.setUpdateDateTime(LocalDateTime.now());
                     odai.setInsertDateTime(LocalDateTime.now());
                     odaiList.add(odai);
+
                 }
 
         );

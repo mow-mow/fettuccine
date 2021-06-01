@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface OdaiRepository extends JpaRepository<Odai, String> {
-    List<Odai> findByTargetDate(String targetDate);
+    List<Odai> findByTargetDateOrderByDisplayOrder(String targetDate);
 }
