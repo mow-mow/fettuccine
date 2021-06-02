@@ -42,13 +42,17 @@ public class TweetLogic {
 
     public void retweet(List<Status> statuses) {
         log.info("リツイート処理 [開始]");
-        try {
-            for (Status status : statuses) {
+        for (Status status : statuses) {
+            try {
+                if (status.isRetweetedByMe()) {
+                    log.info("既にリツイートされています:" + status.getId());
+                    continue;
+                }
                 log.info("リツイート:" + status.getId());
                 twitter.retweetStatus(status.getId());
+            } catch (TwitterException e) {
+                log.error("リツイート処理時にエラーが発生しました", e);
             }
-        } catch (TwitterException e) {
-            log.error("リツイート処理時にエラーが発生しました", e);
         }
         log.info("リツイート処理 [終了]");
     }
