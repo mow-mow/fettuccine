@@ -3,6 +3,7 @@ package info.caprese.fettuccine.service;
 import info.caprese.fettuccine.controller.OdaiRenponse;
 import info.caprese.fettuccine.logic.OdaiApiLogic;
 import info.caprese.fettuccine.logic.TweetLogic;
+import info.caprese.fettuccine.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,10 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import twitter4j.Status;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -39,6 +44,19 @@ public class OdaiBotService {
         tweetLogic.tweet(text);
 
     }
+
+    public void retweetPostedWorks() {
+        String targetOdaiHashTag = careateTargetOdaiHashTag();
+
+        List<Status> result = tweetLogic.search(targetOdaiHashTag + " filter:media -filter:retweets");
+
+        tweetLogic.retweet(result);
+    }
+
+    private String careateTargetOdaiHashTag() {
+        return "#mow版深夜のお絵描き60分一本勝負_" + DateUtil.format(LocalDateTime.now().minusDays(1L), "yyyyMMdd");
+    }
+
 
     private String generateTweetAnnouncement(OdaiRenponse odai) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
