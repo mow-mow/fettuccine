@@ -6,11 +6,11 @@ import info.caprese.fettuccine.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
+import twitter4j.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -21,6 +21,37 @@ public class TweetLogic {
 
     @Autowired
     TweetJournalRepository tweetJournalRepository;
+
+
+    public List<Status> search(String queryStr) {
+        log.info("ツイート検索処理 [開始]：" + queryStr);
+        List<Status> statuses = new ArrayList<>();
+        Query query = new Query(queryStr);
+        try {
+            QueryResult result = twitter.search(query);
+            for (Status status : result.getTweets()) {
+                log.info("検索結果 [" + status.getId() + "] @" + status.getUser().getScreenName() + ":" + status.getText());
+                statuses.add(status);
+            }
+        } catch (TwitterException e) {
+            log.error("検索時にエラーが発生しました", e);
+        }
+        log.info("ツイート検索処理 [終了]");
+        return statuses;
+    }
+
+    public void retweet(List<Status> statuses) {
+        log.info("リツイート処理 [開始]");
+        try {
+            for (Status status : statuses) {
+                log.info("リツイート:" + status.getId());
+                twitter.retweetStatus(status.getId());
+            }
+        } catch (TwitterException e) {
+            log.error("リツイート処理時にエラーが発生しました", e);
+        }
+        log.info("リツイート処理 [終了]");
+    }
 
     public boolean tweet(String message) {
 
