@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface OdaiMRepository extends JpaRepository<OdaiM, Integer> {
-    @Query(value = "SELECT * FROM odai_m ORDER BY RAND() LIMIT 3", nativeQuery = true)
+    @Query(value = "SELECT * FROM odai_m WHERE delete_flag='0' ORDER BY RAND() LIMIT 3", nativeQuery = true)
     List<OdaiM> findOdaiMRandom();
 }

@@ -15,4 +15,5 @@ public class OdaiM {
     private String odaiName;
     private LocalDateTime updateDateTime;
     private LocalDateTime insertDateTime;
+    private Boolean deleteFlag;
 }
