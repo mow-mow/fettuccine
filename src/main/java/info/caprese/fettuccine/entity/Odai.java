@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @IdClass(OdaiPk.class)
 public class Odai {
     @Id
+    private LocalDateTime odaiDate;
     private String targetDate;
     private Integer displayOrder;
     @Id
