@@ -26,7 +26,7 @@ public class OdaiService {
     private OdaiMRepository odaiMRepository;
 
     public List<Odai> findOdai(String date) {
-        List<Odai> odaiList = odaiRepository.findByTargetDateOrderByDisplayOrder(date);
+        List<Odai> odaiList = odaiRepository.findByOdaiDateOrderByDisplayOrder(DateUtil.toLocalDateTime(date, "yyyy-MM-dd"));
         if (odaiList.size() != 0) {
             log.info("お題あり");
             return odaiList;
