@@ -1,6 +1,8 @@
 package info.caprese.fettuccine.logic;
 
+import info.caprese.fettuccine.entity.RetweetJournal;
 import info.caprese.fettuccine.entity.TweetJournal;
+import info.caprese.fettuccine.model.RetweetJournalRepository;
 import info.caprese.fettuccine.model.TweetJournalRepository;
 import info.caprese.fettuccine.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,9 @@ public class TweetLogic {
 
     @Autowired
     TweetJournalRepository tweetJournalRepository;
+
+    @Autowired
+    RetweetJournalRepository retweetJournalRepository;
 
 
     public List<Status> search(String queryStr) {
@@ -50,11 +55,31 @@ public class TweetLogic {
                 }
                 log.info("リツイート:" + status.getId());
                 twitter.retweetStatus(status.getId());
+                
+                retweetJournalRepository.save(generateRetweetJournal(status));
+                
+
             } catch (TwitterException e) {
                 log.error("リツイート処理時にエラーが発生しました", e);
             }
         }
         log.info("リツイート処理 [終了]");
+    }
+
+    private RetweetJournal generateRetweetJournal(Status status) {
+        LocalDateTime sysdate = LocalDateTime.now();
+        RetweetJournal journal = new RetweetJournal();
+
+        journal.setStatusId(status.getId());
+        journal.setUserId(status.getUser().getId());
+        journal.setUserName(status.getUser().getName());
+        journal.setUserScreenName(status.getUser().getScreenName());
+
+        journal.setInsertDate(sysdate);
+        journal.setUpdateDate(sysdate);
+        journal.setDeleteFlag(false);
+
+        return journal;
     }
 
     public boolean tweet(String message) {

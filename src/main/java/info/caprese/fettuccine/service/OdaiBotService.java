@@ -1,8 +1,10 @@
 package info.caprese.fettuccine.service;
 
 import info.caprese.fettuccine.controller.OdaiRenponse;
+import info.caprese.fettuccine.entity.OdaiState;
 import info.caprese.fettuccine.logic.OdaiApiLogic;
 import info.caprese.fettuccine.logic.TweetLogic;
+import info.caprese.fettuccine.model.OdaiStateRepository;
 import info.caprese.fettuccine.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import twitter4j.Status;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -24,6 +27,8 @@ public class OdaiBotService {
     OdaiApiLogic odaiApiLogic;
     @Autowired
     TweetLogic tweetLogic;
+    @Autowired
+    private OdaiStateRepository odaiStateRepository;
 
     public void announcement() {
 
@@ -31,8 +36,15 @@ public class OdaiBotService {
 
         String text = generateTweetAnnouncement(odai);
 
-        tweetLogic.tweet(text);
 
+        tweetLogic.tweet(text);
+        Optional<OdaiState> odaiState = odaiStateRepository.findById(DateUtil.toLocalDateTime(odai.getDate(), "yyyy-MM-dd"));
+        odaiState.ifPresent(s -> {
+            s.setStatus("1");
+            s.setAnnouncementStatus("0");
+            s.setUpdateDateTime(LocalDateTime.now());
+            odaiStateRepository.save(s);
+        });
     }
 
     public void start() {
@@ -42,18 +54,30 @@ public class OdaiBotService {
         String text = generateTweetStart(odai);
 
         tweetLogic.tweet(text);
-
+        Optional<OdaiState> odaiState = odaiStateRepository.findById(DateUtil.toLocalDateTime(odai.getDate(), "yyyy-MM-dd"));
+        odaiState.ifPresent(s -> {
+            s.setStartStatus("0");
+            s.setUpdateDateTime(LocalDateTime.now());
+            odaiStateRepository.save(s);
+        });
     }
 
     public void retweetPostedWorks() {
-        String targetOdaiHashTag = careateTargetOdaiHashTag();
+        String targetOdaiHashTag = createTargetOdaiHashTag();
 
         List<Status> result = tweetLogic.search(targetOdaiHashTag + " filter:media -filter:retweets");
 
         tweetLogic.retweet(result);
+        Optional<OdaiState> odaiState = odaiStateRepository.findById(LocalDateTime.now().minusDays(1L));
+        odaiState.ifPresent(s -> {
+            s.setRetweetStatus("0");
+            s.setStatus("0");
+            s.setUpdateDateTime(LocalDateTime.now());
+            odaiStateRepository.save(s);
+        });
     }
 
-    private String careateTargetOdaiHashTag() {
+    private String createTargetOdaiHashTag() {
         return "#mow版深夜のお絵描き60分一本勝負_" + DateUtil.format(LocalDateTime.now().minusDays(1L), "yyyyMMdd");
     }
 

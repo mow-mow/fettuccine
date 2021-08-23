@@ -2,8 +2,10 @@ package info.caprese.fettuccine.service;
 
 import info.caprese.fettuccine.entity.Odai;
 import info.caprese.fettuccine.entity.OdaiM;
+import info.caprese.fettuccine.entity.OdaiState;
 import info.caprese.fettuccine.model.OdaiMRepository;
 import info.caprese.fettuccine.model.OdaiRepository;
+import info.caprese.fettuccine.model.OdaiStateRepository;
 import info.caprese.fettuccine.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +23,9 @@ public class OdaiService {
 
     @Autowired
     private OdaiRepository odaiRepository;
+
+    @Autowired
+    private OdaiStateRepository odaiStateRepository;
 
     @Autowired
     private OdaiMRepository odaiMRepository;
@@ -58,6 +63,17 @@ public class OdaiService {
                 }
 
         );
+
+        OdaiState odaiState = new OdaiState();
+        odaiState.setTargetDate(StringUtils.left(date, 7));
+        odaiState.setOdaiDate(DateUtil.toLocalDateTime(date, "yyyy-MM-dd"));
+        odaiState.setStatus("n");
+        odaiState.setAnnouncementStatus("n");
+        odaiState.setStartStatus("n");
+        odaiState.setRetweetStatus("n");
+        odaiState.setUpdateDateTime(LocalDateTime.now());
+        odaiState.setInsertDateTime(LocalDateTime.now());
+        odaiStateRepository.save(odaiState);
 
         log.info("お題保存開始");
         odaiRepository.saveAll(odaiList);
