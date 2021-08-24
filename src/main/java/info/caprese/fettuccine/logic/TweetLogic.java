@@ -69,7 +69,8 @@ public class TweetLogic {
     private RetweetJournal generateRetweetJournal(Status status) {
         LocalDateTime sysdate = LocalDateTime.now();
         RetweetJournal journal = new RetweetJournal();
-
+        journal.setTargetDate(DateUtil.format(sysdate, "yyyyMM"));
+        journal.setOdaiDate(sysdate.minusDays(1L));
         journal.setStatusId(status.getId());
         journal.setUserId(status.getUser().getId());
         journal.setUserName(status.getUser().getName());

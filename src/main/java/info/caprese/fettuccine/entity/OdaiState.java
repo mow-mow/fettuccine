@@ -3,10 +3,7 @@ package info.caprese.fettuccine.entity;
 import info.caprese.fettuccine.service.OdaiPk;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
@@ -22,4 +19,6 @@ public class OdaiState {
     private String retweetStatus;
     private LocalDateTime updateDateTime;
     private LocalDateTime insertDateTime;
+    @Version
+    private int version;
 }

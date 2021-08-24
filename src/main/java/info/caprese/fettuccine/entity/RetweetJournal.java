@@ -21,6 +21,8 @@ public class RetweetJournal implements Serializable {
 
 	private String targetDate;
 
+	private LocalDateTime odaiDate;
+
 	private Long statusId;
 
 	private Long userId;
