@@ -69,7 +69,7 @@ public class OdaiBotService {
         List<Status> result = tweetLogic.search(targetOdaiHashTag + " filter:media -filter:retweets");
 
         tweetLogic.retweet(result);
-        Optional<OdaiState> odaiState = odaiStateRepository.findById(LocalDateTime.now().minusDays(1L).with(LocalTime.of(0, 0));
+        Optional<OdaiState> odaiState = odaiStateRepository.findById(LocalDateTime.now().minusDays(1L).with(LocalTime.of(0, 0)));
         odaiState.ifPresent(s -> {
             s.setRetweetStatus("0");
             s.setStatus("0");
