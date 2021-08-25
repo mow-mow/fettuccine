@@ -11,7 +11,7 @@
         <file>${LOG_DIR}fettuccine_app.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_DIR}history/fettuccine_app.log.%d{yyyyMMdd}.txt</fileNamePattern>
-            <maxHistory>2</maxHistory>
+            <maxHistory>20</maxHistory>
         </rollingPolicy>
 
     </appender>
