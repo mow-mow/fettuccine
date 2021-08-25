@@ -16,6 +16,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import twitter4j.Status;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,7 +69,7 @@ public class OdaiBotService {
         List<Status> result = tweetLogic.search(targetOdaiHashTag + " filter:media -filter:retweets");
 
         tweetLogic.retweet(result);
-        Optional<OdaiState> odaiState = odaiStateRepository.findById(LocalDateTime.now().minusDays(1L));
+        Optional<OdaiState> odaiState = odaiStateRepository.findById(LocalDateTime.now().minusDays(1L).with(LocalTime.of(0, 0));
         odaiState.ifPresent(s -> {
             s.setRetweetStatus("0");
             s.setStatus("0");
