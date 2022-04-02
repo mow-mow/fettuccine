@@ -1,5 +1,5 @@
-#mow版深夜のお絵描き60分一本勝負
-#mow版深夜のお絵描き60分一本勝負_[# th:utext="${date}" /]
+#GuP版深夜のお絵描き60分勝負
+#GuP版深夜のお絵描き60分勝負_[# th:utext="${date}" /]
 ワンドロ開始時間です
 みなさん宜しくお願いします
 お題[# th:each="themeName : ${themeNames}"  th:utext="'「'+${themeName}+'」'" /]

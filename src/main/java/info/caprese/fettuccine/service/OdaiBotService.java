@@ -79,7 +79,7 @@ public class OdaiBotService {
     }
 
     private String createTargetOdaiHashTag() {
-        return "#mow版深夜のお絵描き60分一本勝負_" + DateUtil.format(LocalDateTime.now().minusDays(1L), "yyyyMMdd");
+        return "#GuP版深夜のお絵描き60分勝負_" + DateUtil.format(LocalDateTime.now().minusDays(1L), "yyyyMMdd");
     }
 
 
