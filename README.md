@@ -1,5 +1,5 @@
 # fettuccine
-ガルパンお題メーカ
+ガルパンお題メーカです。
 
 ### 使用ユーザ
 https://twitter.com/oaraimiho
